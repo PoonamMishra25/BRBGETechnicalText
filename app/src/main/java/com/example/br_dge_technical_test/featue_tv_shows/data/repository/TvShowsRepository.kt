@@ -21,13 +21,13 @@ class TvShowsRepositoryImp @Inject constructor(
     override fun getTvShows(searchQuery: String): Flow<Resource<List<TVShowsResponseItem>>> =
         flow {
             emit(Resource.Loading())
-           // val tvShowInfo = dao.getShowInfo(searchQuery).map { it.toTvShowsResponse() }
-           // emit(Resource.Loading())
+          // val tvShowInfo = dao.getShowInfo(searchQuery).map { it.toTvShowsResponse() }
+           // emit(Resource.Loading(data = tvShowInfo))
             try {
                 val remoteShowInfo = api.fetchAllShowsList(searchQuery = searchQuery)
                 emit(Resource.Success(remoteShowInfo))
-//                dao.deleteShowsInfos(searchQuery)
-//                dao.insertTVShows(remoteShowInfo.map { it.toShowInfo() })
+             //   dao.deleteShowsInfos(searchQuery)
+              //  dao.insertTVShows(remoteShowInfo.map { it.toShowInfo() })
 
             } catch (e: IOException) {
                 emit(Resource.Error("${e.message}"))
@@ -36,8 +36,8 @@ class TvShowsRepositoryImp @Inject constructor(
                 emit(Resource.Error("${e.message}"))
             }
 
-            //val newWordInfo = dao.getShowInfo(searchQuery).map { it.toTvShowsResponse() }
-            //emit(Resource.Success(newWordInfo))
+           // val newWordInfo = dao.getShowInfo(searchQuery).map { it.toTvShowsResponse() }
+           // emit(Resource.Success(newWordInfo))
 
         }
 

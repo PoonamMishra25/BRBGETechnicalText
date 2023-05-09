@@ -26,6 +26,11 @@ class ShowInfoModule {
             .build()
             .create(TVShowsService::class.java)
 
+//    @Provides
+//    @Singleton
+//    fun provideRepository(api: TVShowsService,dao:TVShowsDao): TvShowsRepository {
+//        return TvShowsRepositoryImp(api, dao)
+//    }
     @Provides
     @Singleton
     fun provideRepository(api: TVShowsService): TvShowsRepository {
@@ -33,5 +38,20 @@ class ShowInfoModule {
     }
     @Provides
     @Singleton
-    fun provideShowInfoUseCase(repo: TvShowsRepository) = GetWordInfoUseCase(repo)
+    fun provideShowInfoUseCase(repo: TvShowsRepository, ) = GetWordInfoUseCase(repo)
+
+//    @Provides
+//    @Singleton
+//    fun provideDatabase(@ApplicationContext context: Context):TVShowsDatabase{
+//        return Room.databaseBuilder(context,
+//            TVShowsDatabase::class.java,"TVInfoDB")
+//            .addTypeConverter(Converters(GsonParser(Gson())))
+//            .build()
+//    }
+
+//    @Provides
+//    @Singleton
+//    fun provideDao(database:TVShowsDatabase):TVShowsDao{
+//        return database.tvShowsDao()
+//    }
 }

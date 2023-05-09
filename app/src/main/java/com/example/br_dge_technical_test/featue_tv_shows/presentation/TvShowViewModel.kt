@@ -1,5 +1,6 @@
 package com.example.br_dge_technical_test.featue_tv_shows.presentation
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -20,9 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TvShowViewModel @Inject constructor(private val showsUseCase: GetWordInfoUseCase) :
     ViewModel() {
-
-    private val _searchQuery = mutableStateOf("")
-    val searchQuery: State<String> = _searchQuery
+//    private val _searchQuery = mutableStateOf("")
+//    var searchQuery: MutableState<String> = _searchQuery
 
     private val _state = mutableStateOf(ShowInfoState())
     val state: State<ShowInfoState> = _state
@@ -33,10 +33,11 @@ class TvShowViewModel @Inject constructor(private val showsUseCase: GetWordInfoU
 
     private var searchJob: Job? = null
     fun onSearch(query: String) {
-        _searchQuery.value = query
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(500L)
+        //_searchQuery.value = query
+       // searchJob?.cancel()
+        //searchJob =
+            viewModelScope.launch {
+           // delay(500L)
             showsUseCase(query).onEach {
                 when (it) {
                     is Resource.Error -> {
@@ -44,17 +45,12 @@ class TvShowViewModel @Inject constructor(private val showsUseCase: GetWordInfoU
                             it.data ?: emptyList(), isLoading = false
                         )
                         _eventFlow.emit(UIEvent.ShowSnackBar(it.msg ?: "unknown error!"))
-
                     }
                     is Resource.Loading -> {
-
+                        _state.value = state.value.copy(isLoading = true)
                     }
                     is Resource.Success -> {
-                        _state.value = state.value.copy(
-
-                            it.data ?: emptyList(), isLoading = true
-                        )
-
+                        _state.value = state.value.copy(it.data!!, isLoading = false)
                     }
                 }
             }.launchIn(this)
@@ -64,4 +60,5 @@ class TvShowViewModel @Inject constructor(private val showsUseCase: GetWordInfoU
     sealed class UIEvent {
         data class ShowSnackBar(val message: String) : UIEvent()
     }
+
 }

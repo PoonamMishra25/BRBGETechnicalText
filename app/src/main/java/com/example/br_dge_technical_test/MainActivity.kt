@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.br_dge_technical_test.featue_tv_shows.navigation.TVShowsNavigation
 import com.example.br_dge_technical_test.featue_tv_shows.presentation.SearchComponent
 import com.example.br_dge_technical_test.ui.theme.BRDGE_Technical_TestTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                  SearchComponent()
+                TVShowsNavigation()
                 }
             }
         }

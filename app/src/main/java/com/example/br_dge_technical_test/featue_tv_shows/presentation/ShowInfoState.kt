@@ -4,5 +4,5 @@ import com.example.br_dge_technical_test.featue_tv_shows.data.remote.model.TVSho
 
 data class ShowInfoState(
     val showItem:List<TVShowsResponseItem> = emptyList(),
-    val isLoading:Boolean=false
+    var isLoading:Boolean=false
 )
