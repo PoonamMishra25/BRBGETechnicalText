@@ -3,7 +3,7 @@ buildscript {
         compose_version = '1.5.0-alpha03'
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath 'com.android.tools.build:gradle:7.4.2'
         // classpath "com.google.dagger:hilt-android-gradle-plugin:2.44"
     }
 }

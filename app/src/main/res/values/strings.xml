@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BR-DGE_Technical_Test</string>
+    <string name ="error_message">Pardon us, but no shows or people matching your query were found. You can make a request to add the show you\'re looking for.</string>
 </resources>

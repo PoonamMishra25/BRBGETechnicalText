@@ -14,19 +14,20 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,11 +48,15 @@ fun SearchComponent(navController: NavController) {
     val viewModel: TvShowViewModel = hiltViewModel()
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState() // need for snackBar
+    var errorMessage  by remember {
+        mutableStateOf("")
+    }
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is TvShowViewModel.UIEvent.ShowSnackBar -> {
                     scaffoldState.snackbarHostState.showSnackbar(message = event.message)
+                    errorMessage = event.message
                 }
             }
         }
@@ -90,7 +95,7 @@ fun SearchComponent(navController: NavController) {
                     value = searchQuery,
                     onValueChange = {
                         searchQuery = it
-                    },//viewModel::onSearch,
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(color = Color.White),
@@ -129,14 +134,14 @@ fun SearchComponent(navController: NavController) {
                     )
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-//                if (errorMessage.value.isNotBlank()) {
-//                    state.isLoading = false
-//                    Text(
-//                        text = errorMessage.toString(),
-//                        color = MaterialTheme.colors.error,
-//                        style = TextStyle(fontSize = 14.sp, textAlign = TextAlign.Center)
-//                    )
-//                }
+                if (errorMessage.isNotBlank() && state.showItem.isEmpty()) {
+                    state.isLoading = false
+                    Text(
+                        text = stringResource(id = R.string.error_message),
+                        color = MaterialTheme.colors.error,
+                        style = TextStyle(fontSize = 14.sp, textAlign = TextAlign.Center)
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
                 if (state.isLoading) {
@@ -191,7 +196,7 @@ fun ShowInfoItem(
         horizontalArrangement = Arrangement.Start
     ) {
         GlideImage(
-            model = show.image.medium ?: painterResource(id = R.drawable.tv_default),
+            model = show.image.original,
             contentDescription = null,
             modifier = modifier
                 .padding(8.dp)
