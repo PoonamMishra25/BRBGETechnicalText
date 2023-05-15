@@ -39,7 +39,7 @@ class ShowInfoModule {
 
     @Provides
     @Singleton
-    fun provideShowInfoUseCase(repo: TvShowsRepository, ) = GetWordInfoUseCase(repo)
+    fun provideShowInfoUseCase(repo: TvShowsRepository,dao: TVShowsDao ) = GetWordInfoUseCase(repo,dao)
 
     @Provides
     @Singleton

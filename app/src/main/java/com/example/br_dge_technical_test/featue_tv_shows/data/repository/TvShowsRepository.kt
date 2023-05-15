@@ -8,10 +8,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.lang.RuntimeException
 import javax.inject.Inject
 
 interface TvShowsRepository {
     fun getTvShows(searchQuery: String): Flow<Resource<List<TVShowsResponseItem>>>
+    fun fetchAllTvShows(dao: TVShowsDao): Flow<List<TVShowsResponseItem>>
 }
 
 class TvShowsRepositoryImp @Inject constructor(
@@ -28,11 +30,13 @@ class TvShowsRepositoryImp @Inject constructor(
                 val remoteShowInfo = api.fetchAllShowsList(searchQuery = searchQuery)
                 emit(Resource.Success(remoteShowInfo))
                 dao.deleteShowsInfos(searchQuery)
-                if(remoteShowInfo.isNotEmpty()) {
+                if (remoteShowInfo.isNotEmpty()) {
                     dao.insertTVShows(remoteShowInfo.map { it.toShowInfo() })
-                }else{
+                } else {
                     emit(Resource.Error("Pardon us, but no shows or people matching your query were found"))
                 }
+            } catch (e: RuntimeException) {
+                emit(Resource.Error("${e.message}"))
             } catch (e: IOException) {
                 emit(Resource.Error("${e.message}"))
 
@@ -40,10 +44,20 @@ class TvShowsRepositoryImp @Inject constructor(
                 emit(Resource.Error("${e.message}"))
             }
 
+
             val newWordInfo = dao.getShowInfo(searchQuery).map { it.toShow() }
             emit(Resource.Success(newWordInfo))
 
         }
+
+    override fun fetchAllTvShows(dao: TVShowsDao): Flow<List<TVShowsResponseItem>> =
+
+        flow {
+            if (dao.fetchAllShows().isNotEmpty()) {
+                emit(dao.fetchAllShows().map { it.toShow() })
+            }
+        }
+
 
 }
 

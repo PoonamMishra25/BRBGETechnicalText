@@ -10,7 +10,7 @@ import com.example.br_dge_technical_test.featue_tv_shows.data.remote.model.TVSho
 @Entity(tableName = "_tv_shows")
 data class TvShowsEntities(
     val genres: String = "",
-    val image: String = "",
+    val image: String = "https://kodi.tv/images/addons/matrix/metadata.tvmaze/resources/icon.png",
     val language: String = "",
     val name: String = "",
     val rating: Double = 0.0,

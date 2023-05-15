@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TVShowsDao {
@@ -16,4 +17,6 @@ interface TVShowsDao {
 
     @Query("Select * from _tv_shows where name like '%' || :name || '%'")
     suspend fun getShowInfo(name: String): List<TvShowsEntities>
+    @Query("Select * from _tv_shows")
+    suspend fun fetchAllShows(): List<TvShowsEntities>
 }

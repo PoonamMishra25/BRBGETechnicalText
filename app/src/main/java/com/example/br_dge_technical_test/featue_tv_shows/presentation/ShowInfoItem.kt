@@ -143,12 +143,10 @@ fun SearchComponent(navController: NavController) {
                     )
                 }
 
+
                 Spacer(modifier = Modifier.height(16.dp))
-                if (state.isLoading) {
-                    CircularProgressIndicator()
-                    state.isLoading = false
-                } else {
-                    state.isLoading = false
+                val listOfTVShowsDB = viewModel.fetchAlldata()
+                if(listOfTVShowsDB.isNotEmpty()){
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
@@ -170,6 +168,38 @@ fun SearchComponent(navController: NavController) {
                             if (index < state.showItem.size - 1) {
                                 Divider()
                             }
+
+                        }
+                    }
+                }
+                if (state.isLoading) {
+                    CircularProgressIndicator()
+                    state.isLoading = false
+                } else {
+                    state.isLoading = false
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(8.dp)
+                    )
+                    {
+
+                        itemsIndexed(state.showItem) { index, item ->
+
+                            if (index > 0) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                            ShowInfoItem(tvShowsResponseItem = item) {
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    key = TV_SHOWS_INDEX_KEY,
+                                    value = item
+                                )
+                                navController.navigate(Screens.DetailsScreen.name)
+                            }
+                            if (index < state.showItem.size - 1) {
+                                Divider()
+                            }
+
                         }
                     }
                 }
@@ -196,7 +226,7 @@ fun ShowInfoItem(
         horizontalArrangement = Arrangement.Start
     ) {
         GlideImage(
-            model = show.image.original,
+            model = show.image?.original ?: painterResource(id = R.drawable.tv_default),
             contentDescription = null,
             modifier = modifier
                 .padding(8.dp)

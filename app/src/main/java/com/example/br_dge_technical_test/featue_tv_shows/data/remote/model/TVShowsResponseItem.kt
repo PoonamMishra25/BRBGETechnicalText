@@ -3,6 +3,7 @@ package com.example.br_dge_technical_test.featue_tv_shows.data.remote.model
 import android.os.Parcelable
 import com.example.br_dge_technical_test.featue_tv_shows.data.local.TvShowsEntities
 import kotlinx.parcelize.Parcelize
+import java.lang.NullPointerException
 
 @Parcelize
 data class TVShowsResponseItem(

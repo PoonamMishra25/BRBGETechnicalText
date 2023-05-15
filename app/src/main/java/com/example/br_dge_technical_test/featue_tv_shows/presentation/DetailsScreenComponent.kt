@@ -53,7 +53,7 @@ fun DetailsScreenComponent(
 
             if (showItem != null) {
                 Text(text = showItem.show.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                if (showItem.show.image.original.isNotBlank()) {
+                if (showItem.show.image?.original?.isNotBlank() == true) {
                     GlideImage(
                         model = showItem.show.image.original,
                         contentDescription = null,
